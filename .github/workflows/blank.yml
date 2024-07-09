@@ -29,16 +29,12 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           ID_RSA: ${{ secrets.ID_RSA }}
         run: |
-           mkdir ~/.ssh
-           echo $ID_RSA > ~/.ssh/id_rsa
-           chmod 400 ~/.ssh/id_rsa
-           cat ~/.ssh/id_rsa
-           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile class
-           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile class
-           aws configure set region us-east-1 --profile class
+           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+           aws configure set region us-east-1
            IP=`curl -s http://whatismyip.akamai.com/`
            echo $IP
-           aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile class --output text
+           aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile default --output text
 
       - name: SSH
         id: result
@@ -51,4 +47,4 @@ jobs:
           script: build test -s
 
       - name: passfail
-        run: cat steps.result.outputs.*
+        run: echo ${{ steps.result.outputs.* }}
