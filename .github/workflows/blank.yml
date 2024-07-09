@@ -24,19 +24,17 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-
       - name: Get IP and set ec2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          ID_RSA: ${{ secrets.ID_RSA }}
         run: |
+           echo $ID_RSA > ~/.ssh/id_rsa
            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile class
            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile class
            aws configure set region us-east-1 --profile class
            IP=`curl -s http://whatismyip.akamai.com/`
            echo $IP
            aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile class --output text
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: ssh -l admin -p 33018 54.159.142.179 build test -s
+           ssh -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
