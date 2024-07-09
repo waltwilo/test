@@ -25,8 +25,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      - name: Get IP
-        run: curl https://api.ipify.org
+      - name: Get IP and set ec2
+        run: |
+           IP=`curl -s http://whatismyip.akamai.com/`
+           aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile class --output text
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
