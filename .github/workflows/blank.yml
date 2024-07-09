@@ -47,4 +47,4 @@ jobs:
           script: build test -s
 
       - name: passfail
-        run: echo ${{ steps.result.outputs.* }}
+        run: echo ${{join(steps.run_tests.outputs.*, '\n')}}
