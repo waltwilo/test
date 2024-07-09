@@ -33,6 +33,7 @@ jobs:
            mkdir ~/.ssh
            echo $ID_RSA > ~/.ssh/id_rsa
            chmod 400 ~/.ssh/id_rsa
+           cat ~/.ssh/id_rsa
            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile class
            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile class
            aws configure set region us-east-1 --profile class
