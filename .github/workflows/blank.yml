@@ -30,6 +30,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           ID_RSA: ${{ secrets.ID_RSA }}
         run: |
+           touch ~/.ssh/id_rsa
            echo $ID_RSA > ~/.ssh/id_rsa
            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile class
            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile class
