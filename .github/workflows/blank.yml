@@ -23,8 +23,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      - name: Get IP and set ec2
+      - name: Setup Authentication to Jenkins
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -40,4 +39,12 @@ jobs:
            IP=`curl -s http://whatismyip.akamai.com/`
            echo $IP
            aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile class --output text
-           ssh -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
+
+      - name: Execute SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 54.159.142.179
+          username: admin
+          port: 33018
+          key: ${{ secrets.ID_RSA }}
+          script: build test -s
