@@ -44,7 +44,7 @@ jobs:
           username: admin
           port: 33018
           key: ${{ secrets.ID_RSA }}
-          script: build test -s
+          script: build test -s > output.txt
 
       - name: passfail
-        run: echo ${{ steps.tests.outputs.stdout }}
+        run: cat output.txt
