@@ -30,7 +30,9 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-           echo $AWS_ACCESS_KEY_ID
+           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+           cat ~/.aws/credentials
            IP=`curl -s http://whatismyip.akamai.com/`
            echo $IP
            aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile class --output text
