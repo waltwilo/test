@@ -32,7 +32,7 @@ jobs:
         run: |
            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile class
            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile class
-           cat ~/.aws/credentials
+           aws configure set region us-east-1 --profile class
            IP=`curl -s http://whatismyip.akamai.com/`
            echo $IP
            aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile class --output text
