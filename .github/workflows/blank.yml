@@ -40,7 +40,7 @@ jobs:
         run: |
           echo $ID_RSA > ./id_rsa
           sudo chmod 400 ./id_rsa
-          ssh -i ./id_rsa -l admin -p 33108 54.159.142.179 build test -s
+          ssh -i ./id_rsa -l admin -p 33018 54.159.142.179 build test -s
           
       # - name: SSH
       #   id: ssh
