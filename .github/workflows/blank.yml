@@ -43,6 +43,14 @@ jobs:
       #     port: 33018
       #     key: ${{ secrets.ID_RSA }}
 
+      - name: Checkout repository content
+        uses: actions/checkout@v2 # Checkout the repository content to github runner.
+
+      - name: Setup Python Version
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 # Install the python version needed
+
       - name: python script
         run: python GHATest.py
 
