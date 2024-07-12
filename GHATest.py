@@ -9,10 +9,11 @@ parser.add_argument('-p')
 parser.add_argument('-l')
 parser.add_argument('-i')  
 
+subprocess.run("curl" "-s" "http://whatismyip.akamai.com/")
+
 args = parser.parse_args()
 print(args)
 
-print(os.system('ipconfig'))
 
 test = subprocess.run(["ssh", "-i", args.i, "-l", args.l, "-p", args.p, args.a, "build", "test", "-s"]) 
 
