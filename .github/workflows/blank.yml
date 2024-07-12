@@ -50,7 +50,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           cat ~/.ssh/id_rsa
           OUTPUT=$(ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s)
-          echo "jenkins=$OUTPUT >> $GITHUB_OUTPUT
+          echo "jenkins=$OUTPUT\n" >> $GITHUB_OUTPUT
 
       - name: Revoke EC2 Access
         run: |
