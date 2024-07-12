@@ -8,8 +8,6 @@ parser.add_argument('-a')
 parser.add_argument('-p')  
 parser.add_argument('-l') 
 
-subprocess.run("curl", "-s", "http://whatismyip.akamai.com/")
-
 args = parser.parse_args()
 print(args)
 
