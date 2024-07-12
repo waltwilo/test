@@ -40,17 +40,14 @@ jobs:
           aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile default --output text
           
       - name: SSH Test
-        id: ssh
-        env: 
-          ID_RSA: ${{ secrets.ID_RSA }}
         run: |
           mkdir -p ~/.ssh/
           chmod 700 ~/.ssh/
           cp id_rsa ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa
-          OUTPUT=$(ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s)
-          echo "jenkins=$OUTPUT\n" >> $GITHUB_OUTPUT
+
+      - name: Run Script
+        run: python GHATest.py
 
       - name: Revoke EC2 Access
         run: |
