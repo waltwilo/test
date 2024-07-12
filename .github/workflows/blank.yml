@@ -42,14 +42,7 @@ jobs:
           username: admin
           port: 33018
           key: ${{ secrets.ID_RSA }}
-          script: |
-            output=$(build test -s)
-            echo "$output"
-            if echo "$output" | grep -qi "fail"; then
-              echo "Error: SSH command output contains 'fail'."
-              exit 1
-            fi
 
-      - name: Use SSH Output
-        run: echo "The SSH output was ${{ needs.build.outputs.ssh-output }}"
+      - name: python script
+        run: python GHATest.py
 
