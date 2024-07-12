@@ -47,7 +47,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Run Script
-        run: python GHATest.py
+        run: python GHATest.py -l admin -p 33018 -a 54.159.142.179
 
       - name: Revoke EC2 Access
         run: |
