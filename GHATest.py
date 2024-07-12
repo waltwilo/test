@@ -12,5 +12,4 @@ args = parser.parse_args()
 print(args)
 
 test = subprocess.run(["ssh", "-o", "StrictHostKeyChecking=no", "-i", "~/.ssh/id_rsa", "-l", args.l, "-p", args.p, args.a, "build", "test", "-s"], capture_output=True, text=True) 
-print("TEST\n\n" + test.stdout)
-# print("TEST\n" + test)
+
