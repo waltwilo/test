@@ -42,15 +42,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
           
-      # - name: SSH
-      #   id: ssh
-      #   uses: appleboy/ssh-action@v1.0.3
-      #   with:
-      #     host: 54.159.142.179
-      #     username: admin
-      #     port: 33018
-      #     key: ${{ secrets.ID_RSA }}
-      #     script: build test -s
+      - name: SSH
+        id: ssh
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 54.159.142.179
+          username: admin
+          port: 33018
+          key: ${{ secrets.ID_RSA }}
+          script: build test -s
 
       # - name: Checkout repository content
       #   uses: actions/checkout@v2 # Checkout the repository content to github runner.
