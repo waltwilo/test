@@ -51,6 +51,7 @@ jobs:
           chmod 700 ~/.ssh/
           echo $ID_RSA > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          cat ~/.ssh/id_rsa
           ssh-keygen -l -f ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
 
