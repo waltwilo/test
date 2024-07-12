@@ -51,7 +51,8 @@ jobs:
           chmod 700 ~/.ssh/
           echo $ID_RSA > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -vvv -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
+          ssh-keygen -l -f ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
 
       # - name: Checkout repository content
       #   uses: actions/checkout@v2 # Checkout the repository content to github runner.
