@@ -32,16 +32,7 @@ jobs:
           IP=$(curl -s http://whatismyip.akamai.com/)
           echo "::set-output name=ip::$IP"
           aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile default --output text
-          
-      - name: SSH Test
-        env: 
-          ID_RSA: ${{ secrets.ID_RSA }}
-        run: |
-          mkdir -p ~/.ssh/
-          echo $ID_RSA > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
-          
+
       - name: SSH
         id: ssh
         uses: appleboy/ssh-action@v1.0.3
@@ -51,6 +42,15 @@ jobs:
           port: 33018
           key: ${{ secrets.ID_RSA }}
           script: build test -s
+          
+      - name: SSH Test
+        env: 
+          ID_RSA: ${{ secrets.ID_RSA }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo $ID_RSA > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
 
       # - name: Checkout repository content
       #   uses: actions/checkout@v2 # Checkout the repository content to github runner.
