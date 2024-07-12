@@ -32,24 +32,6 @@ jobs:
           IP=$(curl -s http://whatismyip.akamai.com/)
           echo "::set-output name=ip::$IP"
           aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile default --output text
-
-
-      steps:
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/staging.key
-          chmod 600 ~/.ssh/staging.key
-          cat >>~/.ssh/config <<END
-          Host ec2-3-221-166-169.compute-1.amazonaws.com
-        	HostName ec2-3-221-166-169.compute-1.amazonaws.com
-        	IdentityFile ~/.ssh/ec2.pem
-        	User admin
-          END
-        env:
-          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
-          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
-          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
           
       - name: SSH Test
         env: 
