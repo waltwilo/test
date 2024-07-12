@@ -53,5 +53,7 @@ jobs:
       - name: python script
         env: 
           ID_RSA: ${{ secrets.ID_RSA }}
-        run: python3 GHATest.py -a 54.159.142.179 -l admin -p 33108 -i $ID_RSA
+        run: |
+          echo $ID_RSA > ./id_rsa
+          python3 GHATest.py -a 54.159.142.179 -l admin -p 33108 -i ./id_rsa
 
