@@ -24,7 +24,7 @@ jobs:
       - name: Checkout repository content
         uses: actions/checkout@v2 # Checkout the repository content to github runner.
 
-      - name: Auth
+      - name: AWS Auth
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -32,19 +32,12 @@ jobs:
           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
           aws configure set region us-east-1
+
+      - name: Enable EC2 Access
+        run: |  
           IP=$(curl -s http://whatismyip.akamai.com/)
           echo "::set-output name=ip::$IP"
           aws ec2 authorize-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile default --output text
-
-      - name: SSH
-        id: ssh
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: 54.159.142.179
-          username: admin
-          port: 33018
-          key: ${{ secrets.ID_RSA }}
-          script: build test -s
           
       - name: SSH Test
         env: 
@@ -57,15 +50,10 @@ jobs:
           cat ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -l admin -p 33018 54.159.142.179 build test -s
 
-      # - name: Setup Python Version
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: 3.8 # Install the python version needed
-
-      # - name: python script
-      #   env: 
-      #     ID_RSA: ${{ secrets.ID_RSA }}
-      #   run: |
-      #     echo $ID_RSA > ./id_rsa
-      #     python3 GHATest.py -a 54.159.142.179 -l admin -p 33108 -i ./id_rsa
+      - name: Revoke EC2 Access
+        run: |  
+          IP=$(curl -s http://whatismyip.akamai.com/)
+          echo "::set-output name=ip::$IP"
+          aws ec2 revoke-security-group-ingress --group-name "launch-wizard-3" --protocol tcp --port 33018 --cidr $IP/32 --profile default --output text
+          
 
